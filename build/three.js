@@ -19868,7 +19868,6 @@
 		var poseTarget = null;
 
 		var standingMatrix = new Matrix4();
-		var standingMatrixInverse = new Matrix4();
 
 		if ( typeof window !== 'undefined' && 'VRFrameData' in window ) {
 
@@ -19924,7 +19923,6 @@
 		//
 
 		this.enabled = false;
-		this.userHeight = 1.6;
 
 		this.getDevice = function () {
 
@@ -19955,39 +19953,9 @@
 
 			//
 
-			var pose = frameData.pose;
 			var poseObject = poseTarget !== null ? poseTarget : camera;
 
-			if ( pose.position !== null ) {
-
-				poseObject.position.fromArray( pose.position );
-
-			} else {
-
-				poseObject.position.set( 0, 0, 0 );
-
-			}
-
-			if ( pose.orientation !== null ) {
-
-				poseObject.quaternion.fromArray( pose.orientation );
-
-			}
-
 			var stageParameters = device.stageParameters;
-
-			if ( stageParameters ) {
-
-				standingMatrix.fromArray( stageParameters.sittingToStandingTransform );
-
-			} else {
-
-				standingMatrix.makeTranslation( 0, scope.userHeight, 0 );
-
-			}
-
-			poseObject.position.applyMatrix4( standingMatrix );
-			poseObject.updateMatrixWorld();
 
 			if ( device.isPresenting === false ) return camera;
 
@@ -20004,13 +19972,6 @@
 
 			cameraL.matrixWorldInverse.fromArray( frameData.leftViewMatrix );
 			cameraR.matrixWorldInverse.fromArray( frameData.rightViewMatrix );
-
-			// TODO (mrdoob) Double check this code
-
-			standingMatrixInverse.getInverse( standingMatrix );
-
-			cameraL.matrixWorldInverse.multiply( standingMatrixInverse );
-			cameraR.matrixWorldInverse.multiply( standingMatrixInverse );
 
 			var parent = poseObject.parent;
 

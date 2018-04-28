@@ -2,10 +2,10 @@
   "name": "three",
   "version": "0.90.0",
   "description": "JavaScript 3D library",
-  "main": "src/Three.js",
+  "main": "build/three.js",
   "repository": "mrdoob/three.js",
-  "jsnext:main": "src/Three.js",
-  "module": "src/Three.js",
+  "jsnext:main": "build/three.module.js",
+  "module": "build/three.module.js",
   "files": [
     "package.json",
     "bower.json",

@@ -108,20 +108,12 @@ function WebVRManager( renderer ) {
 		var pose = frameData.pose;
 		var poseObject = poseTarget !== null ? poseTarget : camera;
 
-		if ( pose.orientation ) {
-			poseOrientation.fromArray(pose.orientation);
-		} else {
-			poseOrientation.set(0, 0, 0, 1);
-		}
-
 		camera.getWorldPosition(camPosition);
+		camera.getWorldQuaternion(poseOrientation);
 		camVRToSitting.compose(camPosition, poseOrientation, identityScale);
 		sittingToCamVR = camVRToSitting.getInverse(camVRToSitting);
 
 		// We want to manipulate poseObject by its position and quaternion components since users may rely on them.
-		if ( pose.orientation !== null ) {
-			poseObject.quaternion.fromArray(pose.orientation);
-		}
 		poseObject.updateMatrixWorld();
 
 		if ( device.isPresenting === false ) return camera;
